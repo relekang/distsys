@@ -155,7 +155,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
             for (int j = 0; j < board[0].length; j++) {
 
                 // increases count if char is found
-                if (board[i][j].equals(checkChar)){
+                if (board[i][j].getMark() == checkChar){
                     columncheck[j] += 1;
                     linecheck += 1;
                     slash[i+j] += 1;
