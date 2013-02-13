@@ -104,8 +104,12 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 */
 	public void squareClicked(int row, int column) {
 		// This method must be modified!
-		setMark(row, column, myMark);
-	}
+        setMark(row, column, myMark);
+        Boolean test = true;
+        if (test) {
+            endGame(true);
+        }
+    }
 
 	/**
 	 * Marks the specified square of the board with the specified mark.
@@ -129,7 +133,8 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 			quit();
 	}
 
-	/**
+
+    /**
 	 * Starts a new game, if the user confirms it in a dialog box.
 	 */
 	public void newGame() {
@@ -139,7 +144,28 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		}
 	}
 
-	/**
+    /**
+     * Called when a game ends.
+     */
+    public void endGame(Boolean won) {
+        // This method must be modified!
+        String text;
+        if (won) {
+            text = "Congratulations, you won! Do you want to start a new game?";
+        }
+        else {
+            text = "You lost!! Do you want to start a new game?";
+        }
+
+        if(JOptionPane.showConfirmDialog(this, text, "Start over?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            clearBoard();
+        }
+        else {
+            System.exit(0);
+        }
+    }
+
+    /**
 	 * Removes all marks from the board.
 	 */
 	public void clearBoard() {
