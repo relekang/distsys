@@ -17,4 +17,7 @@ public interface Constants {
 	/** The height of a square in the board */
 	public static final int SQUARE_HEIGHT = 30;
 
+
+	public static final int PORT = 1099;
+
 }

@@ -8,7 +8,9 @@ public interface TTTServer extends Remote {
     public static final int MARK_SET = 0;
     public static final int MARK_SET_WON = 0;
 
-    public boolean joinGame() throws RemoteException;
-    public int setMark(int x, int y, String mark) throws RemoteException;
-    public boolean exitGame() throws RemoteException;
+    public String connect(String playerName, char mark, TTTServer opponent) throws RemoteException;
+    public void setMark(int x, int y) throws RemoteException;
+    public void resetBoard() throws RemoteException;
+    public void disconnect() throws RemoteException;
+    public void notifyVictory() throws RemoteException;
 }

@@ -1,6 +1,11 @@
 package no.ntnu.tdt4190;
 import java.awt.*;
 import java.awt.event.*;
+import java.rmi.ConnectException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import javax.swing.*;
 
 /**
@@ -30,12 +35,15 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	/** The mark used by this player ('X' or 'O') */
 	private char myMark;
 
-	/**
+    private TTTServer remotePlayer;
+    private TTTServerImp localPlayer;
+
+    /**
 	 * Creates a new GUI.
 	 * @param name	The name of that player.
 	 * @param mark	The mark used by that player.
 	 */
-	public TicTacToeGui(String name, char mark) {
+	public TicTacToeGui(String name, char mark, String address) {
 		myName = name;
 		myMark = mark;
 
@@ -95,9 +103,56 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		setLocation(200, 200);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
+
+        startRmi(address);
+
 	}
 
-	/**
+    private void startRmi(String address) {
+        System.setSecurityManager( new LiberalSecurityManager() );
+        try {
+            this.localPlayer = new TTTServerImp(this);
+        } catch (RemoteException e) {
+            this.println("Det oppstod en feil");
+            e.printStackTrace();
+        }
+
+
+        try {
+            String url = "rmi://"+ address + "/TTTServer";
+            this.remotePlayer = (TTTServer) Naming.lookup(url);
+        } catch (NotBoundException nbe) {
+            System.err.println("Ingen TTSServer er registrert!");
+        } catch (ConnectException ce) {
+            System.err.println("Fant ikke RMI registry på adressen " + address);
+        } catch (Exception e) {
+            System.err.println("En uventet feil oppsto: " + e.getMessage());
+        }
+        if(this.remotePlayer == null){
+            try {
+                System.out.println("Binder tjeneren til registry...");
+                LocateRegistry.createRegistry(PORT);
+                String url = "rmi://" + address + "/TTTServer";
+                Naming.rebind(url, localPlayer);
+                this.localPlayer.setUrl(url);
+                System.out.println("Tjeneren er registrert og venter på hevendelser fra klienter.");
+            } catch (ConnectException ce) {
+                System.err.println("Fant ikke RMI registry på adressen " + address);
+            } catch (Exception e) {
+                System.err.println("En uventet feil oppsto: " + e.getMessage());
+            }
+        } else {
+            try {
+                // Connect to the server
+                String opponent = this.remotePlayer.connect("Test", 'X', localPlayer);
+                println("Koblet til " + opponent);
+            } catch (RemoteException re) {
+                this.println("Kunne ikke koble til server");
+            }
+        }
+    }
+
+    /**
 	 * Called by the Square class when an empty square is clicked.
 	 * @param row		The row of the square that was clicked.
 	 * @param column	The column of the square that was clicked.
@@ -105,10 +160,6 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	public void squareClicked(int row, int column) {
 		// This method must be modified!
         setMark(row, column, myMark);
-        Boolean test = true;
-        if (test) {
-            endGame(true);
-        }
     }
 
 	/**
@@ -119,6 +170,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 */
 	public void setMark(int row, int column, char mark) {
 		board[row][column].setMark(mark);
+        this.
 		repaint();
 	}
 
@@ -192,6 +244,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 */
 	public void println(String s) {
 		display.append(s + "\n");
+        System.out.println(s);
 	}
 
 	/**
@@ -200,6 +253,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 */
 	public void print(String s) {
 		display.append(s);
+        System.out.print(s);
 	}
 
 	/**
@@ -207,6 +261,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 * to check the appearance of the GUI.
 	 */
 	public static void main(String args[]) {
-		TicTacToeGui hisGui = new TicTacToeGui("Ottar", 'X');
+		TicTacToeGui hisGui = new TicTacToeGui("Ottar", 'X', "127.0.0.1:1099");
+
 	}
 }
