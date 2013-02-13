@@ -159,9 +159,19 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 */
 	public void squareClicked(int row, int column) {
 		// This method must be modified!
-        setMark(row, column, myMark);
+        try {
+            setMark(row, column, myMark);
+            remotePlayer.setMark(row, column);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         if (hasWon(myMark)) {
             endGame(true);
+            try {
+                remotePlayer.notifyVictory();
+            } catch (RemoteException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
     }
 
@@ -173,7 +183,6 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 */
 	public void setMark(int row, int column, char mark) {
 		board[row][column].setMark(mark);
-        this.
 		repaint();
 	}
 
@@ -260,6 +269,11 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
         }
         else {
             System.exit(0);
+            try {
+                remotePlayer.disconnect();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -271,7 +285,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 			for(int col = 0; col < board[row].length; col++)
 				board[row][col].setMark(' ');
 		repaint();
-	}
+    }
 
 	/**
 	 * Exits the game, if the user confirms it in a dialog box.
