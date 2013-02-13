@@ -105,8 +105,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	public void squareClicked(int row, int column) {
 		// This method must be modified!
         setMark(row, column, myMark);
-        Boolean test = true;
-        if (test) {
+        if (hasWon(myMark)) {
             endGame(true);
         }
     }
@@ -133,6 +132,49 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 			quit();
 	}
 
+
+    private boolean hasWon(char checkChar){
+
+        // set win limit
+        int winLimit = Constants.WINNER_LENGTH;
+
+        // horizontal count
+        int linecheck = 0;
+
+        // vertical count
+        int[] columncheck = new int[board.length];
+
+        // diagonal left count
+        int[] slash = new int[board.length + board[0].length];
+
+        // diagonal right count
+        int[] backslash = new int[board.length + board[0].length];
+
+        for (int i = 0; i < board.length; i++) {
+            linecheck = 0;
+            for (int j = 0; j < board[0].length; j++) {
+
+                // increases count if char is found
+                if (this.board[i][j].equals(checkChar)){
+                    columncheck[j] += 1;
+                    linecheck += 1;
+                    slash[i+j] += 1;
+                    backslash[(backslash.length+i-j)%backslash.length] +=1;
+                    // return true if winLimit is reached
+                    if (Math.max(Math.max(linecheck, columncheck[j]), Math.max(slash[i+j], backslash[(backslash.length+i-j)%backslash.length])) >= winLimit)
+                        return true;
+                }
+                // else, reset values
+                else {
+                    linecheck = 0;
+                    columncheck[j] = 0;
+                    slash[i+j] = 0;
+                    backslash[(backslash.length+i-j)%(backslash.length)] = 0;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
 	 * Starts a new game, if the user confirms it in a dialog box.
