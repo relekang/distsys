@@ -31,6 +31,7 @@ public class TTTServerImp extends UnicastRemoteObject implements TTTServer {
         } catch (MalformedURLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        gui.setOppoent(opponent);
         return playerName;
     }
 
