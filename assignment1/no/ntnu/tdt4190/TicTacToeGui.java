@@ -37,6 +37,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 
     private TTTServer remotePlayer;
     private TTTServerImp localPlayer;
+    private boolean myTurn = true;
 
     /**
 	 * Creates a new GUI.
@@ -158,7 +159,10 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 * @param column	The column of the square that was clicked.
 	 */
 	public void squareClicked(int row, int column) {
-		// This method must be modified!
+		// If it's not my turn, don't respond
+        if (!myTurn)
+            return;
+        // This method must be modified!
         setMark(row, column, myMark);
         if (hasWon(myMark)) {
             endGame(true);
@@ -172,7 +176,11 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 	 * @param mark		The mark to use.
 	 */
 	public void setMark(int row, int column, char mark) {
-		board[row][column].setMark(mark);
+		if (mark == myMark)
+            myTurn = false;
+        else
+            myTurn = true;
+        board[row][column].setMark(mark);
         this.
 		repaint();
 	}
