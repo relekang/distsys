@@ -51,7 +51,7 @@ public class TTTServerImp extends UnicastRemoteObject implements TTTServer {
 
     @Override
     public void notifyVictory() throws RemoteException {
-        gui.println("Du tapte");
+        gui.endGame(false);
     }
 
 }
