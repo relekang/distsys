@@ -16,4 +16,5 @@ public interface Constants {
 	public static final int SQUARE_WIDTH = 30;
 	/** The height of a square in the board */
 	public static final int SQUARE_HEIGHT = 30;
+
 }
