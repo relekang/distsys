@@ -73,8 +73,9 @@ public class Square extends JPanel implements Constants, MouseListener
 	 * @param e	The MouseEvent that occured.
 	 */
 	public void mouseClicked(MouseEvent e) {
-		if (currentMark == ' ')
+		if (currentMark == ' ') {
 			theGui.squareClicked(row, column);
+        }
 	}
 
 	// MouseListener methods that are not used:
