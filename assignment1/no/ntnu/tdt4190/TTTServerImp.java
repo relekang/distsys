@@ -43,6 +43,7 @@ public class TTTServerImp extends UnicastRemoteObject implements TTTServer {
     @Override
     public void resetBoard() throws RemoteException {
         gui.clearBoard();
+        gui.println("Opponent reset board (surrendered)");
     }
 
     @Override
@@ -53,6 +54,15 @@ public class TTTServerImp extends UnicastRemoteObject implements TTTServer {
     @Override
     public void notifyVictory() throws RemoteException {
         gui.endGame(false);
+    }
+
+    @Override
+    public void setServerStarts(boolean serverStarts) throws RemoteException {
+        gui.setMyTurn(serverStarts);
+        if (serverStarts)
+            gui.println("Your start.");
+        else
+            gui.println("Opponent start.");
     }
 
 }

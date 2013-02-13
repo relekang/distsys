@@ -13,4 +13,5 @@ public interface TTTServer extends Remote {
     public void resetBoard() throws RemoteException;
     public void disconnect() throws RemoteException;
     public void notifyVictory() throws RemoteException;
+    public void setServerStarts(boolean serverStarts) throws RemoteException;
 }
