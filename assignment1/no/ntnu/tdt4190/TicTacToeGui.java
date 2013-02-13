@@ -146,6 +146,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
                 // Connect to the server
                 String opponent = this.remotePlayer.connect("Test", 'X', localPlayer);
                 println("Koblet til " + opponent);
+                setName("Per");
             } catch (RemoteException re) {
                 this.println("Kunne ikke koble til server");
             }
@@ -324,4 +325,13 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 		TicTacToeGui hisGui = new TicTacToeGui("Ottar", 'X', "127.0.0.1:1099");
 
 	}
+
+    public void setOppoent(TTTServer opponent) {
+        this.remotePlayer = opponent;
+    }
+
+    public void setName(String name) {
+        myName = name;
+        id.setText(myName + ": You are player " + myMark);
+    }
 }
