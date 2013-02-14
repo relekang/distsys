@@ -109,40 +109,49 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
 
     }
 
+    // Makes RMI available on given address
     private void startRmi(String address) {
+        // Sets the SecurityManager in <allow-all>-mode
         System.setSecurityManager( new LiberalSecurityManager() );
+        // sets localPlayer variable (the local RMI-object to be published)
         try {
             this.localPlayer = new TTTServerImp(this);
         } catch (RemoteException e) {
-            this.println("Det oppstod en feil");
+            this.println("An error occured while trying to instanciate TTTServerImp");
             e.printStackTrace();
         }
 
-
+        // Gets remotePlayer-variable (RMI-object of opponent) from address
         try {
             String url = "rmi://"+ address + "/TTTServer";
             this.remotePlayer = (TTTServer) Naming.lookup(url);
         } catch (NotBoundException nbe) {
-            System.err.println("Ingen TTSServer er registrert!");
+            System.err.println("No TTSServer is registrert!");
         } catch (ConnectException ce) {
-            System.err.println("Fant ikke RMI registry på adressen " + address);
+            System.err.println("Couldn't find RMI registry on given address: " + address);
         } catch (Exception e) {
-            System.err.println("En uventet feil oppsto: " + e.getMessage());
+            System.err.println("An unexpected error occured: " + e.getMessage());
         }
+        
+        // If there is no available remotePlayer on the given address, it
+        // registeres localPlayer (its own RMI object) there
         if(this.remotePlayer == null){
             try {
-                System.out.println("Binder tjeneren til registry...");
+                System.out.println("Binding server to registry...");
                 LocateRegistry.createRegistry(PORT);
                 String url = "rmi://" + address + "/TTTServer";
                 Naming.rebind(url, localPlayer);
                 this.localPlayer.setUrl(url);
-                System.out.println("Tjeneren er registrert og venter på hevendelser fra klienter.");
+                System.out.println("Server is registered and waiting for incoming connections.");
             } catch (ConnectException ce) {
-                System.err.println("Fant ikke RMI registry på adressen " + address);
+                System.err.println("Couldn't find RMI registry on given address: " + address);
             } catch (Exception e) {
-                System.err.println("En uventet feil oppsto: " + e.getMessage());
+                System.err.println("An unexpected error occured: " + e.getMessage());
             }
-        } else {
+        } 
+        // else (there is an avaiable remotePlayer on the given address), it 
+        // connects to it
+        else {
             try {
                 // Connect to the server
                 String opponent = this.remotePlayer.connect("Test", 'X', localPlayer);
@@ -151,12 +160,12 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
                 myTurn = (Math.random() > 0.5) ? true: false;
                 remotePlayer.setServerStarts(!myTurn);
                 if (myTurn)
-                    println("Your start.");
+                    println("You start.");
                 else
                     println("Opponent start.");
             } catch (RemoteException re) {
-                this.println("Kunne ikke koble til server");
-            } catch (Exception e) {println("Noe hendte galt");}
+                this.println("Couldn't connect to server");
+            } catch (Exception e) {println("An unexpected error occured: " + e.getMessage());}
         }
     }
 
@@ -273,7 +282,7 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
                 remotePlayer.resetBoard();
                 remotePlayer.setServerStarts(!myTurn);
                 if (myTurn)
-                    println("Your start.");
+                    println("You start.");
                 else
                     println("Opponent start.");
             } catch (RemoteException e){e.printStackTrace();}
