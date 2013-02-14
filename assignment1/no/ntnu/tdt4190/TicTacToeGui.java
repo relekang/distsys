@@ -297,12 +297,12 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
             clearBoard();
         }
         else {
-            System.exit(0);
             try {
                 remotePlayer.disconnect();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+            System.exit(0);
         }
     }
 
@@ -324,6 +324,11 @@ public class TicTacToeGui extends JFrame implements Constants, ActionListener {
     public void quit() {
         // This method should be modified!
         if(JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Really quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+             try {
+                remotePlayer.disconnect();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             System.exit(0);
         }
     }
