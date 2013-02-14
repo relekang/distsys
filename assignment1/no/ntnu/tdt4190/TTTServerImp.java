@@ -31,10 +31,10 @@ public class TTTServerImp extends UnicastRemoteObject implements TTTServer {
             Naming.unbind(this.url);
         } catch (NotBoundException e) {
             e.printStackTrace(); 
-            gui.println('The given URL was not bounded');
+            gui.println("The given URL was not bounded");
         } catch (MalformedURLException e) {
             e.printStackTrace(); 
-            gui.println('URL was given in wrong format');
+            gui.println("URL was given in wrong format");
         }
         gui.setOppoent(opponent);
         return playerName;
