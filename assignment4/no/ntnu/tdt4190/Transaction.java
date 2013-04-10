@@ -143,6 +143,7 @@ public class Transaction
 	 * @param resource	The resource whose lock should be acquired.
 	 */
 	public void acquireLock(LockedResource resource) {
+        // TODO
 		waitingForResource = resource;
 		owner.println("Trying to claim lock of resource "+resource.resourceId+" at server "+resource.locationId, transactionId);
 		try {

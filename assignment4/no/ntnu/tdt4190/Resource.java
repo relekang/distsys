@@ -54,6 +54,7 @@ public class Resource
 	 * @return					Whether or not the lock could be released.
 	 */
 	public synchronized boolean unlock(int transactionId) {
+        // TODO
 		if(lockOwner == null || lockOwner.intValue() != transactionId) {
 			System.err.println("Error: Transaction "+transactionId+" tried to unlock a resource without owning the lock!");
 			return false;
