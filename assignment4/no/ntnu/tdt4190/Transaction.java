@@ -24,6 +24,8 @@ public class Transaction
 	/** The transaction file reader whose input specifies the contents of this transaction */
 	private TransactionFileReader input;
 
+    // KOK: private boolean once = true;
+
 	/**
 	 * Creates a new transaction object.
 	 * @param transactionId		The ID of the transaction.
@@ -151,6 +153,7 @@ public class Transaction
 				lockAcquired(resource);
 			}
 			else {
+                // KOK: this.rollback();
 				System.err.println("We didn't get the lock we wanted! How can that happen?");
 			}
 		} catch(RemoteException re) {
@@ -177,15 +180,29 @@ public class Transaction
 		abortTransaction = true;
 	}
 
+// KOK:
+//    public synchronized void rollback() {
+//        this.owner.println("Transaction abort requested", this.transactionId);
+//        if (this.waitingForResource != null) {
+//            this.abortTransaction = true;
+//            this.waitingForResource = null;
+//            this.abort();
+//        }
+//    }
+
+
 	/**
 	 * Aborts this transaction, releasing all the locks held by it.
 	 */
 	private synchronized void abort() {
-		owner.println("Aborting transaction "+transactionId+".", transactionId);
+		// KOK: if (once) {
+        owner.println("Aborting transaction "+transactionId+".", transactionId);
 		releaseLocks();
 		owner.println("Transaction "+transactionId+" aborted.", transactionId);
+        // KOK: }
 	}
 
+    
 	/**
 	 * Commits this transaction, releasing all the locks held by it.
 	 */
