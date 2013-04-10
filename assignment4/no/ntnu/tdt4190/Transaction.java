@@ -24,7 +24,7 @@ public class Transaction
 	/** The transaction file reader whose input specifies the contents of this transaction */
 	private TransactionFileReader input;
 
-    // KOK: private boolean once = true;
+    private boolean once = true;
 
 	/**
 	 * Creates a new transaction object.
@@ -181,25 +181,26 @@ public class Transaction
 	}
 
 // KOK:
-//    public synchronized void rollback() {
-//        this.owner.println("Transaction abort requested", this.transactionId);
-//        if (this.waitingForResource != null) {
-//            this.abortTransaction = true;
-//            this.waitingForResource = null;
-//            this.abort();
-//        }
-//    }
+    public synchronized void rollback() {
+        this.owner.println("Transaction abort requested", this.transactionId);
+        if (this.waitingForResource != null) {
+            this.abortTransaction = true;
+            this.waitingForResource = null;
+            this.abort();
+        }
+    }
 
 
 	/**
 	 * Aborts this transaction, releasing all the locks held by it.
 	 */
 	private synchronized void abort() {
-		// KOK: if (once) {
-        owner.println("Aborting transaction "+transactionId+".", transactionId);
-		releaseLocks();
-		owner.println("Transaction "+transactionId+" aborted.", transactionId);
-        // KOK: }
+		// KOK:
+		if (once) {
+            owner.println("Aborting transaction "+transactionId+".", transactionId);
+            releaseLocks();
+            owner.println("Transaction "+transactionId+" aborted.", transactionId);
+        }
 	}
 
 
@@ -262,4 +263,8 @@ public class Transaction
 			owner.println("Failed to unlock resource "+resource.resourceId+" at server "+resource.locationId+" due to communication failure.", transactionId);
 		}
 	}
+
+    public LockedResource getWaitingForResource() {
+        return this.waitingForResource;
+    }
 }

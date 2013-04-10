@@ -36,30 +36,30 @@ public class Resource
 		}
 		else {
             // KOK:
-//            if (Globals.PROBING_ENABLED) {
-//                int sId = this.server.getTransactionOwner(this.lockOwner);
-//                Probe probe = new Probe(this.server, new ArrayList(), transactionId, sId);
-//                probe.start();
-//            }
+            if (Globals.PROBING_ENABLED) {
+                int sId = this.server.getTransactionOwner(this.lockOwner);
+                Probe probe = new Probe(this.server, new ArrayList(), transactionId, sId);
+                probe.start();
+            }
 
 			// Wait for the lock
 			try	{
                 // KOK:
-//                if (Globals.TIMEOUT_INTERVAL > 0) {
-//                    wait(Globals.TIMEOUT_INTERVAL);
-//                }
-//                else {
+                if (Globals.TIMEOUT_INTERVAL > 0) {
+                    wait(Globals.TIMEOUT_INTERVAL);
+                }
+                else {
     				wait();
-//                }
+                }
 
 			} catch (InterruptedException ie) {
 				return false;
 			}
 // KOK:
-//            if (lockOwner == null) {
-//                lockOwner = new Integer(transactionId);
-//                return true;
-//            }
+            if (lockOwner == null) {
+                lockOwner = new Integer(transactionId);
+                return true;
+            }
 
 
 			lockOwner = new Integer(transactionId);

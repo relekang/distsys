@@ -347,26 +347,26 @@ public class ServerImpl extends UnicastRemoteObject implements Server
 	}
 
     // KOK:
-//    public void probe(ArrayList tIds) throws RemoteException {
-//        if (this.activeTransaction == null)
-//            return;
-//
-//        LockedResource waiting = this.activeTransaction.getWaitingForResource();
-//        if (waiting == null)
-//            return;
-//
-//        if (tIds.contains(this.activeTransaction.getId())) {
-//            this.println("Found cycle, rollback", this.activeTransaction.getId());
-//            this.activeTransaction.rollback();
-//        } else {
-//            Integer tId = waiting.location.getLockOwner(waiting.resourceId);
-//            if (tId == null)
-//                return;
-//            int sId = this.getTransactionOwner(tId);
-//            Probe probe = new Probe(this, tIds, this.activeTransaction.getId(), sId);
-//            probe.start();
-//        }
-//    }
+    public void probe(ArrayList tIds) throws RemoteException {
+        if (this.activeTransaction == null)
+            return;
+
+        LockedResource waiting = this.activeTransaction.getWaitingForResource();
+        if (waiting == null)
+            return;
+
+        if (tIds.contains(this.activeTransaction.getId())) {
+            this.println("Found cycle, rollback", this.activeTransaction.getId());
+            this.activeTransaction.rollback();
+        } else {
+            Integer tId = waiting.location.getLockOwner(waiting.resourceId);
+            if (tId == null)
+                return;
+            int sId = this.getTransactionOwner(tId);
+            Probe probe = new Probe(this, tIds, this.activeTransaction.getId(), sId);
+            probe.start();
+        }
+    }
 
 
 	/**
