@@ -202,7 +202,7 @@ public class Transaction
         // KOK: }
 	}
 
-    
+
 	/**
 	 * Commits this transaction, releasing all the locks held by it.
 	 */

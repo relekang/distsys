@@ -35,12 +35,33 @@ public class Resource
 			return true;
 		}
 		else {
+            // KOK:
+//            if (Globals.PROBING_ENABLED) {
+//                int sId = this.server.getTransactionOwner(this.lockOwner);
+//                Probe probe = new Probe(this.server, new ArrayList(), transactionId, sId);
+//                probe.start();
+//            }
+
 			// Wait for the lock
 			try	{
-				wait();
+                // KOK:
+//                if (Globals.TIMEOUT_INTERVAL > 0) {
+//                    wait(Globals.TIMEOUT_INTERVAL);
+//                }
+//                else {
+    				wait();
+//                }
+
 			} catch (InterruptedException ie) {
 				return false;
 			}
+// KOK:
+//            if (lockOwner == null) {
+//                lockOwner = new Integer(transactionId);
+//                return true;
+//            }
+
+
 			lockOwner = new Integer(transactionId);
 			return true;
 		}
@@ -54,8 +75,7 @@ public class Resource
 	 * @return					Whether or not the lock could be released.
 	 */
 	public synchronized boolean unlock(int transactionId) {
-        // TODO
-		if(lockOwner == null || lockOwner.intValue() != transactionId) {
+ 		if(lockOwner == null || lockOwner.intValue() != transactionId) {
 			System.err.println("Error: Transaction "+transactionId+" tried to unlock a resource without owning the lock!");
 			return false;
 		}
