@@ -20,7 +20,8 @@ class Probe extends Thread {
         this.server.println("Probing server "+this.ids, this.tId);
         try {
             this.server.getServer(this.sId).probe(this.ids);
-        } catch (RemoteException err) {
+        }
+        catch (RemoteException err) {
         }
     }
 }

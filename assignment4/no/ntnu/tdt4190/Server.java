@@ -54,4 +54,10 @@ public interface Server extends Remote {
 	 * Called by another server to ask this server to start its transactions.
 	 */
 	public void startTransactions() throws RemoteException;
+
+    /**
+     * Called by another server to ask this server to look for deadlocks.
+     * @param tIds  A list of transaction Ids that has already probed.
+     */
+    public void probe(ArrayList tIds) throws RemoteException;
 }
