@@ -1,3 +1,4 @@
+package no.ntnu.tdt4190;
 import java.io.*;
 
 /**

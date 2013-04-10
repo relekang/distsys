@@ -1,3 +1,4 @@
+package no.ntnu.tdt4190;
 /**
  * A collection of globally available constants
  * and static methods.

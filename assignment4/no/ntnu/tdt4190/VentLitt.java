@@ -1,3 +1,4 @@
+package no.ntnu.tdt4190;
 public class VentLitt
 {
 	public static void main(String[] args) {

@@ -6,10 +6,10 @@ import java.util.*;
  * This is a SecurityManager that grants all kinds of permissions, but
  * logs and outputs any non-standard permissions granted.
  */
-public class LiberalSecurityManager extends SecurityManager {
+public class LiberalSecurityManager1 extends SecurityManager {
     private Hashtable grantedPermissions;
 
-    public LiberalSecurityManager() {
+    public LiberalSecurityManager1() {
 		grantedPermissions = new Hashtable();
     }
 

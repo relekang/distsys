@@ -1,3 +1,4 @@
+package no.ntnu.tdt4190;
 /**
  * Data structure describing the location
  * and ID of a resource in the distributed
