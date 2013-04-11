@@ -346,7 +346,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server
 		return serverId;
 	}
 
-    // KOK:
     public void probe(ArrayList tIds) throws RemoteException {
         if (this.activeTransaction == null)
             return;

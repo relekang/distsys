@@ -180,7 +180,6 @@ public class Transaction
 		abortTransaction = true;
 	}
 
-// KOK:
     public synchronized void rollback() {
         this.owner.println("Transaction abort requested", this.transactionId);
         if (this.waitingForResource != null) {
@@ -195,7 +194,6 @@ public class Transaction
 	 * Aborts this transaction, releasing all the locks held by it.
 	 */
 	private synchronized void abort() {
-		// KOK:
 		if (once) {
             owner.println("Aborting transaction "+transactionId+".", transactionId);
             releaseLocks();
