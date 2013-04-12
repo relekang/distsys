@@ -153,7 +153,7 @@ public class Transaction
 				lockAcquired(resource);
 			}
 			else {
-                // KOK: this.rollback();
+                this.rollback();
 				System.err.println("We didn't get the lock we wanted! How can that happen?");
 			}
 		} catch(RemoteException re) {
